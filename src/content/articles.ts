@@ -14,9 +14,15 @@ export type Article = {
   title: string;
   kicker: string | null;
   byline: string | null;
+  /** The date line under the byline, where the article carries one. */
+  dateline: string | null;
   avatar: string | null;
-  /** The gold-ruled lede or executive-summary callout above the body. */
+  /** A single gold-ruled lede paragraph, used by the research briefs. */
   callout: string | null;
+  /** Heading for a multi-paragraph summary panel, e.g. "Executive Summary". */
+  summaryLabel: string | null;
+  /** The summary panel's paragraphs. The last renders emphasised. */
+  summary: string[];
   /** Source document offered as a download, if one exists. */
   download: string | null;
   ctaHeading: string | null;
@@ -33,8 +39,11 @@ export const articles: Record<string, Article> = {
     title: "Anti-Palestinian Racism: The Antizionist Movement’s Effort to Institutionalize Antisemitism",
     kicker: "Civil Rights",
     byline: "Ayellet Aviv · Founder",
+    dateline: null,
     avatar: "/assets/team/elle-aviv.webp",
     callout: "The pro-“Palestinian” movement is successfully advancing “Anti-Palestinian Racism” (APR) as a long-overdue civil rights framework. It is not.",
+    summaryLabel: null,
+    summary: [],
     download: "/assets/publications/apr-antizionism-nakba.docx",
     ctaHeading: "Truth is a weapon. Help us wield it.",
     ctaBody: "Support the research, briefings, and coalition work that confront this campaign head-on.",
@@ -47,8 +56,11 @@ export const articles: Record<string, Article> = {
     title: "“Palestinian Resistance”: The Rebrand of Terrorism Into Acceptable Jihad",
     kicker: "Terrorism",
     byline: "Ayellet Aviv · Founder",
+    dateline: null,
     avatar: "/assets/team/elle-aviv.webp",
     callout: "“Palestinian resistance” is not a neutral phrase. In modern Western discourse, it functions as a political and social rebrand for terrorism — a way to transform jihadist violence into the language of liberation.",
+    summaryLabel: null,
+    summary: [],
     download: "/assets/publications/palestinian-resistance.pdf",
     ctaHeading: "Truth is a weapon. Help us wield it.",
     ctaBody: "Support the research, briefings, and coalition work that confront this campaign head-on.",
@@ -61,8 +73,11 @@ export const articles: Record<string, Article> = {
     title: "Antizionism: Today’s Jew-Hatred",
     kicker: "Antisemitism",
     byline: "Ayellet Aviv · Founder",
+    dateline: null,
     avatar: "/assets/team/elle-aviv.webp",
     callout: "Antizionism is antisemitism. Do not be fooled.",
+    summaryLabel: null,
+    summary: [],
     download: "/assets/publications/apr-antizionism-nakba.docx",
     ctaHeading: "Truth is a weapon. Help us wield it.",
     ctaBody: "Support the research, briefings, and coalition work that confront this campaign head-on.",
@@ -75,8 +90,11 @@ export const articles: Record<string, Article> = {
     title: "The Nakba Narrative: How an Arab War of Annihilation Became a Jewish Crime",
     kicker: "History",
     byline: "Ayellet Aviv · Founder",
+    dateline: null,
     avatar: "/assets/team/elle-aviv.webp",
     callout: "“Nakba” is the Arabic word for “catastrophe.” It was coined by Arab historian Constantine Zureiq — not to describe Israel, but to condemn Arab failure after five Arab countries rejected the U.N. Partition Plan, declared war on the newly established State of Israel, and lost.",
+    summaryLabel: null,
+    summary: [],
     download: "/assets/publications/apr-antizionism-nakba.docx",
     ctaHeading: "Truth is a weapon. Help us wield it.",
     ctaBody: "Support the research, briefings, and coalition work that confront this campaign head-on.",
@@ -88,9 +106,12 @@ export const articles: Record<string, Article> = {
     slug: "rama-duwaji",
     title: "A Pattern in Plain Sight: The Public Record of Rama Duwaji",
     kicker: "Article · Public Record",
-    byline: null,
+    byline: "Global Peace for Israel & Dr. Sandra Alfonsi",
+    dateline: "Tuesday, July 14, 2026",
     avatar: null,
     callout: null,
+    summaryLabel: null,
+    summary: [],
     download: "/assets/publications/rama-duwaji.pdf",
     ctaHeading: "Documenting the record takes resources.",
     ctaBody: "Support the research and investigations that hold extremist networks accountable.",
@@ -102,9 +123,12 @@ export const articles: Record<string, Article> = {
     slug: "charlie-kirk-antisemitism-spike",
     title: "Charlie Kirk's Assassination, the Online Antisemitism Spike, and the Rise of Woke-Right Anti-Israel Propaganda",
     kicker: "Article · Online Extremism",
-    byline: null,
+    byline: "Global Peace for Israel by Samantha Nassimi",
+    dateline: null,
     avatar: null,
-    callout: "Executive Summary\n        Charlie Kirk’s assassination on September 10, 2025 became a major accelerant for antisemitic conspiracy theories online. Within hours of his murder at Utah Valley University, online extremists and anti-Israel influencers began blaming Jews, Israel, Mossad, Benjamin Netanyahu, “Zionists,” Jewish donors, or pro-Israel conservatives for his death.",
+    callout: null,
+    summaryLabel: "Executive Summary",
+    summary: ["Charlie Kirk’s assassination on September 10, 2025 became a major accelerant for antisemitic conspiracy theories online. Within hours of his murder at Utah Valley University, online extremists and anti-Israel influencers began blaming Jews, Israel, Mossad, Benjamin Netanyahu, “Zionists,” Jewish donors, or pro-Israel conservatives for his death.", "The available evidence shows a clear temporal correlation between Kirk’s assassination and a rapid increase in antisemitic online content. CCDH found that 126 viral X posts blaming Jews or Israel for Kirk’s assassination reached nearly 140 million views in the five days after the murder, and the Jerusalem Post, citing ADL data, reported more than 10,000 X posts using the phrase “Israel killed Charlie Kirk” after September 10.", "This spike did not appear out of nowhere. It built on an existing online-right ecosystem that had already been moving toward anti-Israel, anti-Zionist, and openly antisemitic messaging. What changed after Kirk’s murder was the speed, intensity, and mainstream visibility of those narratives.", "The strongest conclusion is this: Kirk’s murder did not create online antisemitism, but it gave antisemitic influencers, foreign propaganda networks, and anti-Israel online factions a viral event to exploit."],
     download: "/assets/publications/charlie-kirk-antisemitism-spike.pdf",
     ctaHeading: "Track the propaganda. Fund the research.",
     ctaBody: "Support the work that documents how antisemitic narratives spread and who amplifies them.",
@@ -115,10 +139,13 @@ export const articles: Record<string, Article> = {
   "curriculum-of-erasure": {
     slug: "curriculum-of-erasure",
     title: "Curriculum of Erasure",
-    kicker: null,
-    byline: null,
+    kicker: "Report · Education",
+    byline: "Ali Marks · Education Systems & Institutional Accountability Strategist",
+    dateline: null,
     avatar: null,
-    callout: "Executive Summary\n        Across American classrooms, the story of the Jewish people, the state of Israel, and the history of antisemitism is being quietly minimized, distorted, or omitted entirely. Curriculum of Erasure documents how this happens through textbook framing, curricular gaps, and third-party classroom materials, then lays out concrete steps educators, parents, and policymakers can take to restore accuracy and accountability.",
+    callout: null,
+    summaryLabel: "Executive Summary",
+    summary: ["Across American classrooms, the story of the Jewish people, the state of Israel, and the history of antisemitism is being quietly minimized, distorted, or omitted entirely. Curriculum of Erasure documents how this happens through textbook framing, curricular gaps, and third-party classroom materials, then lays out concrete steps educators, parents, and policymakers can take to restore accuracy and accountability."],
     download: "/assets/publications/curriculum-of-erasure.pdf",
     ctaHeading: "Bring this research to your community.",
     ctaBody: "Request a briefing, partner on curriculum accountability, or support the work.",
@@ -131,8 +158,11 @@ export const articles: Record<string, Article> = {
     title: "After the Shooting: Scrutiny Returns to the Islamic Center of San Diego and Its Links to Terrorism and Islamic Extremism",
     kicker: "Investigation · June 3, 2026",
     byline: "the GPFI Team · Ayellet Aviv",
+    dateline: null,
     avatar: "/assets/team/elle-aviv.webp",
     callout: null,
+    summaryLabel: null,
+    summary: [],
     download: "/assets/publications/islamic-center-san-diego.docx",
     ctaHeading: "Accountability begins with the truth.",
     ctaBody: "Support the investigations and strategy work that hold extremist networks accountable.",

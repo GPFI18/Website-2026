@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Image from "next/image";
 
 import { PageHero } from "@/components/PageHero";
-import { CtaBand } from "@/components/ui";
 import { team } from "@/content/team";
 
 export const metadata: Metadata = {
@@ -65,12 +64,6 @@ export default function TeamPage() {
         </div>
       </section>
 
-      <CtaBand
-        heading="Want to put this expertise to work in your community?"
-        body="Bring a strategy session to your city, partner with us, or join a chapter near you."
-        primary={{ label: "Get in Touch", href: "/contact" }}
-        secondary={{ label: "Join a Chapter", href: "/join" }}
-      />
     </>
   );
 }

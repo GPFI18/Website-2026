@@ -49,6 +49,12 @@ export default function ArticleBody({
                 <strong className="font-semibold text-white">
                   {article.byline.replace(/^the /, "")}
                 </strong>
+                {article.dateline ? (
+                  <>
+                    <br />
+                    <span className="text-white/55">{article.dateline}</span>
+                  </>
+                ) : null}
               </span>
             </span>
           ) : null
@@ -87,6 +93,29 @@ export default function ArticleBody({
             <p className="m-0 mb-9 border-l-4 border-gold-500 pl-[22px] text-[clamp(18px,2.6vw,21px)]/[1.6] font-semibold text-navy-800">
               {article.callout}
             </p>
+          ) : null}
+
+          {article.summary.length ? (
+            <aside className="mb-11 rounded-r-xl border-l-4 border-gold-500 bg-gray-50 px-6 py-7 sm:px-8">
+              {article.summaryLabel ? (
+                <h2 className="m-0 mb-3.5 text-[11px]/[1] font-bold uppercase tracking-[0.14em] text-gold-800">
+                  {article.summaryLabel}
+                </h2>
+              ) : null}
+              {article.summary.map((para, i) => (
+                <p
+                  key={i}
+                  className={[
+                    "text-[16.5px]/[1.75]",
+                    i === article.summary.length - 1
+                      ? "m-0 font-semibold text-navy-800"
+                      : "m-0 mb-4 text-ink-body",
+                  ].join(" ")}
+                >
+                  {para}
+                </p>
+              ))}
+            </aside>
           ) : null}
 
           <div

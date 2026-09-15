@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/PageHero";
 import PublicationsBrowser from "@/components/PublicationsBrowser";
 import { CtaBand } from "@/components/ui";
+import { site } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Publications",
@@ -16,16 +17,21 @@ export default function PublicationsPage() {
       <PageHero
         mode="streaks"
         eyebrow="Publications"
-        title="Research, reports &amp; investigations."
-        lede="Evidence-based work on extremist networks, antisemitism, foreign influence, and what American classrooms teach — published in full, and free to read."
+        title="Research that names the threat."
+        lede="Curriculum reviews, investigative reports, research briefs, analysis, and articles. Every publication is labelled with its author."
       />
 
       <PublicationsBrowser />
 
       <CtaBand
-        heading="Truth is a weapon. Help us wield it."
-        body="Support the research, briefings, and coalition work behind every publication here."
-        secondary={{ label: "Get Involved", href: "/contact" }}
+        heading="Independent research takes resources."
+        body="Every report and brief we publish is funded by people who believe the truth is worth documenting."
+        primary={{
+          label: "Support the Research",
+          href: site.external.donate,
+          external: true,
+        }}
+        secondary={{ label: "Request a Briefing", href: "/contact" }}
       />
     </>
   );
