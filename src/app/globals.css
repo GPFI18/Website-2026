@@ -1,0 +1,575 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   Global Peace for Israel — design tokens
+   Mirrors the token table in the design handoff. Values are authoritative;
+   change them here rather than in component classes.
+   ========================================================================== */
+
+@theme {
+  /* Navy — dark grounds, headings on light */
+  --color-navy-900: #060f22;
+  --color-navy-800: #0a1e42;
+  --color-navy-700: #12305e;
+  --color-navy-600: #164081;
+
+  /* Blue — action, links, accents */
+  --color-blue-700: #083a80;
+  --color-blue-600: #0b4aa2;
+  --color-blue-500: #1f74d0;
+  --color-blue-300: #7fb2ee;
+  --color-blue-200: #9cc6f5;
+  --color-blue-50: #e8f0fb;
+  --color-blue-25: #eef4fb;
+
+  /* Gold — donate, accent rules, stat figures */
+  --color-gold-800: #8a6d24;
+  --color-gold-500: #c6a052;
+  --color-gold-400: #e9c877;
+  --color-gold-50: #f3ead4;
+
+  /* Neutrals */
+  --color-gray-50: #f4f6f9;
+  --color-gray-100: #eef2f7;
+  --color-gray-150: #e8edf4;
+  --color-line: #e6e9ef;
+  --color-line-hover: #c6d3e6;
+  --color-line-input: #d3dae5;
+
+  /* Ink */
+  --color-ink: #1a2540;
+  --color-ink-body: #33415c;
+  --color-ink-muted: #4b5772;
+  --color-ink-soft: #55627a;
+  /* Darkened from the handoff's #8894a8 / #9aa4b6, which fell below the
+     4.5:1 text contrast minimum on white and on gray-50. The shift is
+     imperceptible at these sizes and keeps the metadata visually quiet. */
+  --color-ink-faint: #677080;
+  --color-ink-lightest: #6f7683;
+
+  /* Flag */
+  --color-flag-red: #b31942;
+
+  /* Podcast — a distinct palette, used only in the podcast section */
+  --color-pod-indigo: #1a1f6b;
+  --color-pod-deep: #0d1440;
+  --color-pod-dark: #070d24;
+  --color-pod-darker: #050a18;
+  --color-pod-neon: #8fa8ff;
+
+  /* Type */
+  --font-display: var(--font-montserrat), Montserrat, system-ui, sans-serif;
+  --font-sans: var(--font-inter), Inter, system-ui, sans-serif;
+
+  /* Containers */
+  --container-shell: 1280px;
+  --container-pod: 1180px;
+  --container-cards: 1120px;
+  --container-split: 1080px;
+  --container-hero: 900px;
+  --container-prose: 768px;
+
+  /* Easing */
+  --ease-gpi: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  a {
+    color: var(--color-blue-600);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--color-blue-700);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Visible focus for keyboard users everywhere, including form fields whose
+     default outline the design suppresses. */
+  :focus-visible {
+    outline: 3px solid var(--color-blue-500);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+
+  ::selection {
+    background: var(--color-blue-600);
+    color: #fff;
+  }
+}
+
+/* ==========================================================================
+   Utilities used across pages
+   ========================================================================== */
+
+@utility font-display {
+  font-family: var(--font-display);
+}
+
+/* Scroll reveal — elements start hidden and animate in via IntersectionObserver.
+   The `.is-revealed` class is added by useScrollReveal(). */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.7s var(--ease-gpi),
+    transform 0.7s var(--ease-gpi);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* Section heading accent — a gold rule that draws in from the left. */
+.heading-accent::after {
+  content: "";
+  display: block;
+  height: 3px;
+  width: 64px;
+  margin-top: 16px;
+  background: linear-gradient(90deg, var(--color-gold-500), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.8s var(--ease-gpi);
+}
+
+.heading-accent.is-revealed::after {
+  transform: scaleX(1);
+}
+
+.heading-accent[data-center]::after {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Card — the shared surface for every grid tile on the site. */
+.gpi-card {
+  background: #fff;
+  border: 1px solid var(--color-line);
+  border-radius: 14px;
+  overflow: hidden;
+  transition:
+    transform 0.25s var(--ease-gpi),
+    box-shadow 0.25s var(--ease-gpi),
+    border-color 0.25s var(--ease-gpi);
+}
+
+.gpi-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 22px 44px -22px rgba(10, 30, 66, 0.35);
+  border-color: var(--color-line-hover);
+}
+
+.gpi-card img {
+  transition: transform 0.55s var(--ease-gpi);
+}
+
+.gpi-card:hover img {
+  transform: scale(1.055);
+}
+
+/* Buttons */
+.btn-gold {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 15px 30px;
+  border-radius: 6px;
+  background: var(--color-gold-500);
+  color: #1a1200;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  overflow: hidden;
+  transition:
+    transform 0.25s var(--ease-gpi),
+    box-shadow 0.25s var(--ease-gpi);
+}
+
+.btn-gold:hover {
+  color: #1a1200;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px -14px rgba(198, 160, 82, 0.85);
+}
+
+/* The light sweep across gold buttons on hover. */
+.btn-gold::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 -60%;
+  width: 45%;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(255, 255, 255, 0.5),
+    transparent
+  );
+  transform: skewX(-18deg);
+  transition: left 0.6s var(--ease-gpi);
+}
+
+.btn-gold:hover::after {
+  left: 115%;
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 15px 30px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  transition:
+    transform 0.25s var(--ease-gpi),
+    background 0.25s var(--ease-gpi),
+    border-color 0.25s var(--ease-gpi);
+}
+
+.btn-outline:hover {
+  color: #fff;
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+.btn-solid {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 15px 28px;
+  border-radius: 6px;
+  background: var(--color-blue-600);
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1;
+  transition:
+    transform 0.25s var(--ease-gpi),
+    background 0.25s var(--ease-gpi);
+}
+
+.btn-solid:hover {
+  background: var(--color-blue-700);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.btn-quiet {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 26px;
+  border-radius: 6px;
+  border: 1px solid var(--color-line);
+  background: #fff;
+  color: var(--color-navy-800);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1;
+  transition:
+    transform 0.25s var(--ease-gpi),
+    border-color 0.25s var(--ease-gpi);
+}
+
+.btn-quiet:hover {
+  color: var(--color-navy-800);
+  transform: translateY(-2px);
+  border-color: var(--color-line-hover);
+}
+
+/* Long-form article prose. */
+.gpi-prose {
+  color: var(--color-ink-body);
+  font-size: 17.5px;
+  line-height: 1.85;
+}
+
+.gpi-prose p {
+  margin: 0 0 24px;
+}
+
+.gpi-prose h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 1.25;
+  color: var(--color-navy-800);
+  margin: 46px 0 16px;
+}
+
+.gpi-prose h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 19px;
+  line-height: 1.3;
+  color: var(--color-navy-800);
+  margin: 34px 0 12px;
+}
+
+.gpi-prose ul,
+.gpi-prose ol {
+  margin: 0 0 24px;
+  padding-left: 22px;
+}
+
+.gpi-prose li {
+  margin-bottom: 10px;
+}
+
+.gpi-prose blockquote {
+  margin: 28px 0;
+  padding: 4px 0 4px 22px;
+  border-left: 3px solid var(--color-gold-500);
+  color: var(--color-ink-muted);
+  font-style: italic;
+}
+
+.gpi-prose strong {
+  color: var(--color-navy-800);
+  font-weight: 600;
+}
+
+/* Footer links drift right and brighten on hover. */
+.footer-link {
+  color: rgba(255, 255, 255, 0.7);
+  transition:
+    translate 0.25s var(--ease-gpi),
+    color 0.25s var(--ease-gpi);
+}
+
+.footer-link:hover {
+  translate: 3px 0;
+  color: #fff;
+}
+
+/* Gallery tiles fade and rise in; the diagonal stagger is set inline per tile. */
+.gallery-tile {
+  opacity: 0;
+  transform: translateY(22px) scale(0.985);
+  transition:
+    opacity 0.7s var(--ease-gpi),
+    transform 0.7s var(--ease-gpi),
+    box-shadow 0.3s ease;
+}
+
+.gallery-tile.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Gallery skeleton shimmer, shown until a tile's image decodes. */
+@keyframes gpi-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.gallery-skeleton {
+  background: linear-gradient(100deg, #e8edf4 30%, #f4f7fb 50%, #e8edf4 70%);
+  background-size: 200% 100%;
+  animation: gpi-shimmer 1.5s linear infinite;
+}
+
+/* Home hero crest. */
+@keyframes gpiCrestIn {
+  from {
+    opacity: 0;
+    transform: scale(0.82) rotate(-8deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes gpiCrestFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+@keyframes gpiCrestGlow {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes gpiCrestRing {
+  0% {
+    opacity: 0.5;
+    transform: scale(0.85);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.35);
+  }
+}
+
+/* Podcast section. */
+@keyframes gpiPodFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-16px);
+  }
+}
+
+@keyframes gpiPodGlow {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes gpiPodRing {
+  0% {
+    opacity: 0.55;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.25);
+  }
+}
+
+@keyframes gpiPodBlink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  50%,
+  95% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Stat bar ambient sweep. */
+@keyframes gpiStatSweep {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(320%);
+  }
+}
+
+/* ==========================================================================
+   Reduced motion — suppress every animation and transition.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  [data-reveal],
+  .gallery-tile {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .heading-accent::after {
+    transform: scaleX(1) !important;
+  }
+}
+
+/* Lightbox slide entrance — a cross-fade with a slight scale-up. */
+@keyframes gpi-lb-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Inline links inside running text carry an underline, so they are
+   distinguishable without relying on colour alone (WCAG 1.4.1). Links that are
+   already obvious as controls — nav items, buttons, cards — opt out. */
+.gpi-prose a,
+.inline-link {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in srgb, var(--color-blue-600) 45%, transparent);
+}
+
+.gpi-prose a:hover,
+.inline-link:hover {
+  text-decoration-color: currentColor;
+}
