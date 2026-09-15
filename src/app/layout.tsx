@@ -103,6 +103,18 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${montserrat.variable} ${inter.variable}`}>
+      <head>
+        {/*
+          Marks the document as scripting-capable before first paint, which is
+          what arms the scroll-reveal styles. Kept inline and tiny so it runs
+          ahead of any render; if it never runs, content stays visible.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `document.documentElement.classList.add('js')`,
+          }}
+        />
+      </head>
       <body>
         <a
           href="#main"

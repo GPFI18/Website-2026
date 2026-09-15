@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { primaryNav, site } from "@/content/site";
+import { podcastNavItem, primaryNav, site } from "@/content/site";
 
 /**
  * Sticky site header.
@@ -32,6 +32,14 @@ export default function Header() {
 
   const isCurrent = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
+
+  // Home shows an extra Podcast link, sitting directly after Gallery.
+  const navItems =
+    pathname === "/"
+      ? primaryNav.flatMap((item) =>
+          item.href === "/gallery" ? [item, podcastNavItem] : [item],
+        )
+      : primaryNav;
 
   return (
     <header
@@ -76,23 +84,38 @@ export default function Header() {
           aria-label="Primary"
           className="hidden flex-wrap items-center justify-end gap-4 text-[13px]/[1] font-semibold lg:flex"
         >
-          {primaryNav.map((item) => {
-            const current = isCurrent(item.href);
-            return (
+          {navItems.map((item) => {
+            const current = !item.external && isCurrent(item.href);
+            const className = [
+              "group relative whitespace-nowrap py-1 transition-colors",
+              current ? "text-white" : "text-white/86 hover:text-white",
+            ].join(" ");
+            const underline = (
+              <span
+                aria-hidden
+                className="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-gold-400 transition-transform duration-[320ms] ease-gpi group-hover:scale-x-100"
+              />
+            );
+            return item.external ? (
+              <a
+                key={item.href}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={className}
+              >
+                {item.label}
+                {underline}
+              </a>
+            ) : (
               <Link
                 key={item.href}
                 href={item.href}
                 aria-current={current ? "page" : undefined}
-                className={[
-                  "group relative whitespace-nowrap py-1 transition-colors",
-                  current ? "text-white" : "text-white/86 hover:text-white",
-                ].join(" ")}
+                className={className}
               >
                 {item.label}
-                <span
-                  aria-hidden
-                  className="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-gold-400 transition-transform duration-[320ms] ease-gpi group-hover:scale-x-100"
-                />
+                {underline}
               </Link>
             );
           })}
@@ -151,19 +174,31 @@ export default function Header() {
         className="border-t border-white/10 bg-[rgba(5,12,26,0.98)] px-8 pb-7 pt-5 lg:hidden"
       >
         <ul className="flex flex-col gap-1 text-[15px] font-semibold">
-          {primaryNav.map((item) => (
+          {navItems.map((item) => (
             <li key={item.href}>
-              <Link
-                href={item.href}
-                onClick={() => setMenuOpen(false)}
-                aria-current={isCurrent(item.href) ? "page" : undefined}
-                className={[
-                  "block py-2.5",
-                  isCurrent(item.href) ? "text-white" : "text-white/80",
-                ].join(" ")}
-              >
-                {item.label}
-              </Link>
+              {item.external ? (
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setMenuOpen(false)}
+                  className="block py-2.5 text-white/80"
+                >
+                  {item.label}
+                </a>
+              ) : (
+                <Link
+                  href={item.href}
+                  onClick={() => setMenuOpen(false)}
+                  aria-current={isCurrent(item.href) ? "page" : undefined}
+                  className={[
+                    "block py-2.5",
+                    isCurrent(item.href) ? "text-white" : "text-white/80",
+                  ].join(" ")}
+                >
+                  {item.label}
+                </Link>
+              )}
             </li>
           ))}
         </ul>

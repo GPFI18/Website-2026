@@ -137,9 +137,13 @@
   font-family: var(--font-display);
 }
 
-/* Scroll reveal — elements start hidden and animate in via IntersectionObserver.
-   The `.is-revealed` class is added by useScrollReveal(). */
-[data-reveal] {
+/* Scroll reveal.
+   The hidden state is scoped to `.js`, a class an inline script in the document
+   head sets before first paint. If scripting is disabled, blocked, or the
+   bundle fails to load, the class is never added and every element renders
+   visible — the page degrades to plain content instead of going blank.
+   MotionLayer adds `.is-revealed` as elements scroll into view. */
+.js [data-reveal] {
   opacity: 0;
   transform: translateY(26px);
   transition:
@@ -148,7 +152,7 @@
   transition-delay: var(--reveal-delay, 0ms);
 }
 
-[data-reveal].is-revealed {
+.js [data-reveal].is-revealed {
   opacity: 1;
   transform: none;
 }
@@ -161,12 +165,15 @@
   width: 64px;
   margin-top: 16px;
   background: linear-gradient(90deg, var(--color-gold-500), transparent);
-  transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.8s var(--ease-gpi);
 }
 
-.heading-accent.is-revealed::after {
+.js .heading-accent::after {
+  transform: scaleX(0);
+}
+
+.js .heading-accent.is-revealed::after {
   transform: scaleX(1);
 }
 
@@ -387,7 +394,7 @@
 }
 
 /* Gallery tiles fade and rise in; the diagonal stagger is set inline per tile. */
-.gallery-tile {
+.js .gallery-tile {
   opacity: 0;
   transform: translateY(22px) scale(0.985);
   transition:
@@ -396,7 +403,7 @@
     box-shadow 0.3s ease;
 }
 
-.gallery-tile.is-in {
+.js .gallery-tile.is-in {
   opacity: 1;
   transform: none;
 }
@@ -539,6 +546,10 @@
   .gallery-tile {
     opacity: 1 !important;
     transform: none !important;
+  }
+
+  .heading-accent::after {
+    transform: scaleX(1) !important;
   }
 
   .heading-accent::after {

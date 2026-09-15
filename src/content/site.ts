@@ -44,17 +44,33 @@ export type NavItem = {
   external?: boolean;
 };
 
-/** Primary header navigation, in order. The Donate button is rendered separately. */
+/**
+ * Primary header navigation, in order. The Donate button renders separately.
+ *
+ * Gallery sits before Our Projects — that is the order nine of the eleven
+ * prototype screens use, and what the design canvas shows. (The handoff README
+ * listed them the other way round; the prototypes win.)
+ */
 export const primaryNav: NavItem[] = [
   { label: "About Us", href: "/about" },
   { label: "Our Team", href: "/team" },
   { label: "Publications", href: "/publications" },
   { label: "News", href: "/news" },
-  { label: "Our Projects", href: "/projects" },
   { label: "Gallery", href: "/gallery" },
+  { label: "Our Projects", href: "/projects" },
   { label: "Join a Chapter", href: "/join" },
   { label: "Contact", href: "/contact" },
 ];
+
+/**
+ * The home page carries one extra nav item, linking out to the podcast on
+ * YouTube. It is inserted after Gallery, as in the design.
+ */
+export const podcastNavItem: NavItem = {
+  label: "Podcast",
+  href: site.external.podcast,
+  external: true,
+};
 
 export const footerExplore: NavItem[] = [
   { label: "About Us", href: "/about" },

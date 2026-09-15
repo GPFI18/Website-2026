@@ -190,6 +190,23 @@ export default function GalleryGrid() {
 
   return (
     <>
+      {/* Without JavaScript the measured column layout never runs, so the grid
+          would be empty. This renders the same photographs as a plain CSS
+          multi-column layout instead — no lightbox, but the archive is there. */}
+      <noscript>
+        <div className="mx-auto max-w-[1280px] columns-1 gap-4 sm:columns-2 lg:columns-3">
+          {SOURCES.map((src, i) => (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              key={src}
+              src={src}
+              alt={`Photograph ${i + 1} of ${COUNT}`}
+              className="mb-4 w-full break-inside-avoid rounded-xl"
+            />
+          ))}
+        </div>
+      </noscript>
+
       <div ref={gridRef} className="mx-auto flex max-w-[1280px] items-start gap-4">
         {columns.map((column, c) => (
           <div key={c} className="flex min-w-0 flex-1 flex-col gap-4">

@@ -19,17 +19,25 @@ export default function HomePage() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center [filter:saturate(1.25)_brightness(1.35)_contrast(1.05)]"
+          className="object-cover object-center [filter:saturate(0.82)_brightness(0.72)_contrast(1.04)]"
         />
-        {/* Diagonal scrim: dense at the left so the headline holds contrast,
-            clear at the right so the flags stay visible. */}
+        {/* The photograph reads as deep navy texture rather than vivid flags.
+            Three layers get it there: a flat wash that sets the floor, a
+            diagonal scrim still densest behind the headline, and a vertical
+            one that seats the top and bottom edges. Measured against the
+            design, this holds the whole hero at luminance 20-40 instead of
+            letting the right half blow out to 90+. */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[linear-gradient(100deg,rgba(4,10,26,.72)_0%,rgba(6,15,34,.4)_34%,rgba(8,22,52,.08)_64%,rgba(10,30,66,0)_100%)]"
+          className="pointer-events-none absolute inset-0 bg-[rgba(8,18,38,0.42)]"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(6,15,34,.34)_0%,transparent_32%,transparent_66%,rgba(6,15,34,.72)_100%)]"
+          className="pointer-events-none absolute inset-0 bg-[linear-gradient(100deg,rgba(4,10,26,.74)_0%,rgba(6,15,34,.55)_34%,rgba(8,22,52,.36)_64%,rgba(10,30,66,.30)_100%)]"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(6,15,34,.45)_0%,rgba(6,15,34,.12)_32%,rgba(6,15,34,.12)_66%,rgba(6,15,34,.72)_100%)]"
         />
 
         {/* Logo crest */}
